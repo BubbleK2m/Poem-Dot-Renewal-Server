@@ -2,7 +2,6 @@ from config import Config
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
-from .view import Router
 
 db = SQLAlchemy()
 jwt = JWTManager()
@@ -14,10 +13,11 @@ def create_app(config):
 
     db.init_app(app_)
     jwt.init_app(app_)
+
+    from .view import Router
     Router().init_app(app_)
 
     with app_.app_context():
-        from app import model
         db.create_all()
 
     return app_

@@ -47,6 +47,8 @@ class Config:
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_ECHO = False
+
     JSON_AS_ASCII = False
 
 

@@ -1,19 +1,22 @@
 from app import db
+from ..model import BaseModel
 
 
-class User(db.Model):
+class User(BaseModel):
     id = db.Column(db.String(20), primary_key=True)
     password = db.Column(db.String(30), nullable=False)
     name = db.Column(db.String(20), unique=True, nullable=False)
 
     @classmethod
-    def find_by_id(cls, user_id):
-        return cls.query.filter_by(id=user_id).one()
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).one()
 
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
+    @property
+    def books(self):
+        from .book import Book
+        return Book.query.filter_by(author_id=self.id)
 
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+    @property
+    def poems(self):
+        from .poem import Poem
+        return Poem.query.filter_by(author_id=self.id, book_id=None)
