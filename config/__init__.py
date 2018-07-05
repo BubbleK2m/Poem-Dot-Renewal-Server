@@ -4,7 +4,7 @@ import os
 
 class Config:
     SERVICE_NAME = "Poem"
-    DEBUG = True
+    DEBUG = False
     HOST = 'localhost'
     PORT = os.getenv("PORT", 5000)
     SECRET_KEY = os.getenv("SECRET_KEY", "PLEASE SET YOUR SECRET KEY")
@@ -30,7 +30,7 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
 
     JSON_AS_ASCII = False
 
