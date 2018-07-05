@@ -2,7 +2,7 @@ from flask import abort, Blueprint, request
 from flask_restful import Api, Resource
 from flask_jwt_extended import *
 from sqlalchemy.exc import IntegrityError
-from ..model.user import User
+from ..model import User
 from ..view import json_required
 
 

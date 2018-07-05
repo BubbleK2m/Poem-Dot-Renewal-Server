@@ -28,28 +28,11 @@ class Config:
         'basePath': '/',
     }
 
-    SQLALCHEMY_SETTING = {
-        'dial': 'postgres',
-        'host': 'localhost',
-        'port': 5432,
-        'db': 'poem',
-        'user': 'postgres',
-        'password': 'ehdgus0608',
-    }
-
-    SQLALCHEMY_DATABASE_URI = '{}://{}:{}/{}?user={}&password={}'.format(
-        SQLALCHEMY_SETTING['dial'],
-        SQLALCHEMY_SETTING['host'],
-        SQLALCHEMY_SETTING['port'],
-        SQLALCHEMY_SETTING['db'],
-        SQLALCHEMY_SETTING['user'],
-        SQLALCHEMY_SETTING['password']
-    )
-
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_ECHO = True
 
     JSON_AS_ASCII = False
 
 
-
+from .dev import DevConfig

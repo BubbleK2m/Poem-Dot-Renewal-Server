@@ -9,7 +9,7 @@ class BaseModel(db.Model):
         db.session.commit()
 
     def update(self, **kwargs):
-        for attr, val in kwargs:
+        for attr, val in kwargs.items():
             setattr(self, attr, val)
 
         db.session.commit()
@@ -17,3 +17,15 @@ class BaseModel(db.Model):
     def remove(self):
         db.session.delete(self)
         db.session.commit()
+
+    def to_dict(self):
+        attrs = self.__dict__.copy()
+        del attrs['_sa_instance_state']
+
+        return attrs
+
+
+from .user import User
+from .poem import Poem
+from .book import Book
+from .heart import Heart

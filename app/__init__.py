@@ -1,4 +1,4 @@
-from config import Config
+from config import DevConfig
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
@@ -14,13 +14,14 @@ def create_app(config):
     db.init_app(app_)
     jwt.init_app(app_)
 
+    with app_.app_context():
+        from app import model
+        db.create_all()
+
     from .view import Router
     Router().init_app(app_)
-
-    with app_.app_context():
-        db.create_all()
 
     return app_
 
 
-app = create_app(Config)
+app = create_app(DevConfig)

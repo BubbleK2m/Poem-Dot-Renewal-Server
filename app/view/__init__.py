@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import abort, request
-from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..model.user import User
 
 
@@ -15,6 +15,12 @@ class Router:
 
         from ..view import poem
         app.register_blueprint(poem.api.blueprint)
+
+        from ..view import book
+        app.register_blueprint(book.api.blueprint)
+
+        from ..view import heart
+        app.register_blueprint(heart.api.blueprint)
 
 
 def json_required(required_keys):
@@ -35,8 +41,8 @@ def json_required(required_keys):
 
 
 def user_required(fn):
-    @wraps
-    @fresh_jwt_required
+    @wraps(fn)
+    @jwt_required
     def wrapper(*args, **kwargs):
         user = User.find_by_id(get_jwt_identity())
 

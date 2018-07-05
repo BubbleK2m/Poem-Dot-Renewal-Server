@@ -9,7 +9,7 @@ class User(BaseModel):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).one()
+        return cls.query.filter_by(id=id).first()
 
     @property
     def books(self):
