@@ -1,6 +1,8 @@
 from functools import wraps
-from flask import abort, request
+from flask import abort, request, Response
+from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
+import json
 from ..model.user import User
 
 
@@ -21,6 +23,17 @@ class Router:
 
         from ..view import heart
         app.register_blueprint(heart.api.blueprint)
+
+
+class BaseResource(Resource):
+    def unicode_json_response(self, data, status_code=200, *args, **kwargs):
+        return Response(
+            json.dumps(data, ensure_ascii=False),
+            status=status_code,
+            content_type='application/json; charset=utf-8',
+            *args,
+            **kwargs,
+        )
 
 
 def json_required(required_keys):
@@ -52,3 +65,5 @@ def user_required(fn):
         return fn(*args, **kwargs)
 
     return wrapper
+
+

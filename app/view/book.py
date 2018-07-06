@@ -1,9 +1,8 @@
-import copy
 from functools import wraps
 from flask import abort, Blueprint, request
-from flask_restful import Api, Resource
+from flask_restful import Api
 from flask_jwt_extended import get_jwt_identity
-from ..view import user_required, json_required
+from ..view import BaseResource, user_required, json_required
 from ..model import Book, User, Poem
 
 api = Api(Blueprint(__name__, 'book_api'))
@@ -29,7 +28,7 @@ def author_required(fn):
 
 
 @api.resource('/book')
-class BookService(Resource):
+class BookService(BaseResource):
     @author_required
     @json_required({'title': str, 'description': str})
     def post(self):
@@ -58,4 +57,4 @@ class BookService(Resource):
     @user_required
     def get(self):
         user = User.find_by_id(get_jwt_identity())
-        return [b.to_dict() for b in user.books]
+        self.unicode_json_response([b.to_dict() for b in user.books])

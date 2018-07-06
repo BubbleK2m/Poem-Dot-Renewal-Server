@@ -1,16 +1,16 @@
 from flask import abort, Blueprint, request
-from flask_restful import Api, Resource
+from flask_restful import Api
 from flask_jwt_extended import *
 from sqlalchemy.exc import IntegrityError
 from ..model import User
-from ..view import json_required
+from ..view import BaseResource, json_required
 
 
 api = Api(Blueprint(__name__, 'account_api'))
 
 
 @api.resource('/auth')
-class AuthService(Resource):
+class AuthService(BaseResource):
     @json_required({'id': str, 'password': str})
     def post(self):
         payload = request.json
@@ -26,7 +26,7 @@ class AuthService(Resource):
 
 
 @api.resource('/register')
-class RegisterService(Resource):
+class RegisterService(BaseResource):
     @json_required({'id': str, 'password': str, 'name': str})
     def post(self):
         payload = request.json
@@ -48,7 +48,7 @@ class RegisterService(Resource):
 
 
 @api.resource('/refresh')
-class RefreshService(Resource):
+class RefreshService(BaseResource):
     @jwt_refresh_token_required
     def post(self):
         return {

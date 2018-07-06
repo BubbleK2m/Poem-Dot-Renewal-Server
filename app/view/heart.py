@@ -1,14 +1,14 @@
 from flask import Blueprint, abort, request
-from flask_restful import Api, Resource
+from flask_restful import Api
 from flask_jwt_extended import get_jwt_identity
-from ..view import user_required, json_required
+from ..view import BaseResource, user_required, json_required
 from ..model import Book, Heart, User
 from sqlalchemy.exc import IntegrityError
 
 api = Api(Blueprint(__name__, 'heart_api'))
 
 
-class HeartService(Resource):
+class HeartService(BaseResource):
     @user_required
     @json_required({'value': bool})
     def put(self):
