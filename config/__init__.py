@@ -34,3 +34,4 @@ class Config:
 
 
 from .dev import DevConfig
+from .test import TestConfig
