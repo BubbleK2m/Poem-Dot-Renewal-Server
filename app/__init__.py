@@ -1,4 +1,4 @@
-from config import DevConfig
+from config import DevConfig, TestConfig
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
@@ -16,6 +16,10 @@ def create_app(config):
 
     with app_.app_context():
         from app import model
+
+        if config is TestConfig:
+            db.drop_all()
+
         db.create_all()
 
     from .view import Router
