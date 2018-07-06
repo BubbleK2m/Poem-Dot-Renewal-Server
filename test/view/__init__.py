@@ -1,19 +1,38 @@
 from app import create_app
-from config import Config
+from app.model import User
+from config import TestConfig
+from flask_jwt_extended import create_access_token, create_refresh_token
 from pytest import fixture
 
 
 @fixture(scope='session')
-def flask_app():
-    app = create_app(Config)
+def test_app():
+    app = create_app(TestConfig)
 
     with app.app_context():
         yield app
 
 
 @fixture(scope='session')
-def flask_client(flask_app):
-    return flask_app.test_client()
+def test_client(test_app):
+    return test_app.test_client()
+
+
+@fixture(scope='session')
+def sample_user():
+    return User(id='sample',
+                password='sample',
+                name='sample')
+
+
+@fixture(scope='session')
+def sample_access_token(sample_user):
+    return create_access_token(sample_user.id)
+
+
+@fixture(scope='session')
+def sample_refresh_token(sample_user):
+    return create_refresh_token(sample_user.id)
 
 
 def request(method, url, *args, **kwargs):
@@ -24,14 +43,4 @@ def request(method, url, *args, **kwargs):
     )
 
 
-def test_auth(flask_client):
-    def auth(id, password):
-        return request(flask_client.post, '/auth', json={
-            'id': id,
-            'password': password
-        })
-
-    resp = auth('sample', 'sample')
-    assert resp.status_code == 204
-
-
+from .account import *

@@ -1,1 +1,1 @@
-from .view import account
+from .view import *
