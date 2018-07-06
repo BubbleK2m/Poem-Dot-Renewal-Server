@@ -16,13 +16,9 @@ def create_app(config):
 
     with app_.app_context():
         from app import model
-        db.drop_all()
         db.create_all()
 
     from .view import Router
     Router().init_app(app_)
 
     return app_
-
-
-app = create_app(DevConfig)
