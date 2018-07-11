@@ -1,9 +1,9 @@
 from ..view import request
 
 
-def test_register(test_client, sample_user):
+def test_register(sample_client, sample_user):
     def register(id, password, name):
-        return request(test_client.post, '/register', json={
+        return request(sample_client.post, '/register', json={
             'id': id,
             'name': password,
             'password': name,
@@ -16,9 +16,9 @@ def test_register(test_client, sample_user):
     assert resp.status_code == 201
 
 
-def test_auth(test_client, sample_user):
+def test_auth(sample_client, sample_user):
     def auth(id, password):
-        return request(test_client.post, '/auth', json={
+        return request(sample_client.post, '/auth', json={
             'id': id,
             'password': password
         })
