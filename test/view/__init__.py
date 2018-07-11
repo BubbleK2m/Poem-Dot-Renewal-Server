@@ -6,7 +6,7 @@ from pytest import fixture
 
 
 @fixture(scope='session')
-def test_app():
+def sample_app():
     app = create_app(TestConfig)
 
     with app.app_context():
@@ -14,8 +14,8 @@ def test_app():
 
 
 @fixture(scope='session')
-def test_client(test_app):
-    return test_app.test_client()
+def sample_client(sample_app):
+    return sample_app.test_client()
 
 
 @fixture(scope='session')
@@ -35,12 +35,16 @@ def sample_refresh_token(sample_user):
     return create_refresh_token(sample_user.id)
 
 
-def request(method, url, *args, **kwargs):
+def request(method, url, token=None, *args, **kwargs):
     return method(
-        url,
+        url, headers={
+            'Authorization': f'JWT {token}' if token else None
+        },
+
         *args,
         **kwargs,
     )
 
 
 from .account import *
+from .poem import *
